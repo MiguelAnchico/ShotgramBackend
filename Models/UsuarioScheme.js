@@ -84,7 +84,7 @@ UsuarioSchema.virtual('Usuario', {
 	justOne: false,
 });
 
-UsuarioSchema.virtual('Publicacion', {
+UsuarioSchema.virtual('publicaciones', {
 	ref: 'Publicacion',
 	localField: '_id',
 	foreignField: 'idCreador',

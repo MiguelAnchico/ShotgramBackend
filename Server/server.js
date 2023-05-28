@@ -19,6 +19,7 @@ class Server {
 			comentarios: '/api/comentarios',
 			chats: '/api/chats',
 			mensajes: '/api/mensajes',
+			usuario: '/api/usuarios',
 		};
 
 		this.connectToDB();
@@ -44,6 +45,7 @@ class Server {
 		this.app.use(this.paths.publicaciones, require('../Routes/publicaciones'));
 		this.app.use(this.paths.chats, require('../Routes/chat'));
 		this.app.use(this.paths.mensajes, require('../Routes/mensajes'));
+		this.app.use(this.paths.usuario, require('../Routes/usuarios'));
 	}
 
 	sockets() {

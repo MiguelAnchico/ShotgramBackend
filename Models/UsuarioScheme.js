@@ -20,7 +20,7 @@ const UsuarioSchema = Schema(
 		},
 		descripcion: {
 			type: String,
-			require: true,
+			require: false,
 		},
 		seguidores: [
 			{

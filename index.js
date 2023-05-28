@@ -5,6 +5,7 @@ const cors = require('cors');
 
 // Importamos los modelos
 require('./Models/UsuarioScheme');
+require('./Models/PublicacionesScheme');
 
 // Creamos el servidor con express
 const app = express();

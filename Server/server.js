@@ -2,26 +2,30 @@ const express = require('express');
 require('dotenv').config();
 const { dbConnection } = require('../Database/config');
 const cors = require('cors');
+const { socketController } = require('../Sockets/controllers');
 
 class Server {
 	constructor() {
 		this.app = express();
 		this.port = process.env.PORT;
 		this.server = require('http').createServer(this.app);
-		/*this.io = require('socket.io')(this.server, {
-            cors: {origin: "http://localhost:5173"}
-        });*/
+		this.io = require('socket.io')(this.server, {
+			cors: { origin: 'http://localhost:5173' },
+		});
 
 		this.paths = {
 			auth: '/api/auth',
 			publicaciones: '/api/publicaciones',
+			comentarios: '/api/comentarios',
+			chats: '/api/chats',
+			mensajes: '/api/mensajes',
 		};
 
 		this.connectToDB();
 		this.addMiddlewares();
 		this.setRoutes();
 		// WebSockets
-		//this.sockets();
+		this.sockets();
 	}
 
 	async connectToDB() {
@@ -35,15 +39,17 @@ class Server {
 	}
 
 	setRoutes() {
+		this.app.use(this.paths.comentarios, require('../Routes/comentarios'));
 		this.app.use(this.paths.auth, require('../Routes/auth'));
 		this.app.use(this.paths.publicaciones, require('../Routes/publicaciones'));
+		this.app.use(this.paths.chats, require('../Routes/chat'));
+		this.app.use(this.paths.mensajes, require('../Routes/mensajes'));
 	}
 
-	/*sockets() {
-        // Cuando se Conecta
-        this.io.on('connection',
-            socket => socketController(socket, this.io));
-    }*/
+	sockets() {
+		// Cuando se Conecta
+		this.io.on('connection', (socket) => socketController(socket, this.io));
+	}
 
 	listen() {
 		this.server.listen(this.port, () => {

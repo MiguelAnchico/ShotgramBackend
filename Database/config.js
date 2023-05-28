@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const dbConnection = async () => {
 	try {
+		mongoose.set('strictPopulate', false);
+
 		mongoose.connect(process.env.DB_CONNECTION, {
 			autoIndex: true,
 		});

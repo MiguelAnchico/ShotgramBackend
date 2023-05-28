@@ -34,6 +34,12 @@ const UsuarioSchema = Schema(
 				ref: 'Usuario',
 			},
 		],
+		publicaciones: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: 'Publicacion',
+			},
+		],
 		publicacionesGustados: [
 			{
 				type: Schema.Types.ObjectId,
@@ -74,6 +80,7 @@ const UsuarioSchema = Schema(
 		toObject: {
 			virtual: true,
 		},
+		collection: 'usuarios',
 	}
 );
 
@@ -84,7 +91,7 @@ UsuarioSchema.virtual('Usuario', {
 	justOne: false,
 });
 
-UsuarioSchema.virtual('publicaciones', {
+UsuarioSchema.virtual('publicacion', {
 	ref: 'Publicacion',
 	localField: '_id',
 	foreignField: 'idCreador',

@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const PublicacionesSchema = Schema(
 	{
@@ -27,6 +28,7 @@ const PublicacionesSchema = Schema(
 			require: true,
 		},
 		tags: [String],
+		tipo: { type: String, require: true },
 	},
 	{
 		toJSON: {
@@ -39,17 +41,12 @@ const PublicacionesSchema = Schema(
 	}
 );
 
-PublicacionesSchema.virtual('Usuario', {
-	ref: 'Usuario',
-	localField: 'idCreador',
-	foreignField: '_id',
-	justOne: true,
-});
-
 PublicacionesSchema.method('toJSON', function () {
 	const { __v, _id, ...object } = this.toObject();
 	object.id = _id;
 	return object;
 });
+
+PublicacionesSchema.plugin(mongoosePaginate);
 
 module.exports = model('Publicacion', PublicacionesSchema);

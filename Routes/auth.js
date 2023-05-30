@@ -4,6 +4,11 @@ const router = express.Router();
 const { validarCampos } = require('../Middlewares/validar-campos');
 const { check } = require('express-validator');
 
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
+
+const { subirArchivo } = require('../Controllers/upload');
+
 const {
 	crearUsuario,
 	loginUsuario,
@@ -24,15 +29,16 @@ router.post(
 
 router.post(
 	'/new',
+	upload.single('filename'),
 	[
-		check('user', 'El usuario es obligatorio').not().isEmpty(),
+		check('usuario', 'El usuario es obligatorio').not().isEmpty(),
 		check('password', 'La contraseña es obligatoria').not().isEmpty(),
 		check('nombre', 'El nombre es obligatorio').not().isEmpty(),
 		check('correo', 'El correo es obligatoria').not().isEmpty(),
-		check('imagen', 'La imagen de perfil es obligatoria').not().isEmpty(),
 		check('tipo', 'El tipo de cuenta obligatoria').not().isEmpty(),
 		validarCampos,
 	],
+	subirArchivo,
 	crearUsuario
 );
 router.get('/renew', validarJWT, revalidarToken);

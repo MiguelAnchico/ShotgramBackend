@@ -1,8 +1,15 @@
 const express = require('express');
 require('dotenv').config();
+require('../Database/firebase');
+
 const { dbConnection } = require('../Database/config');
+
 const cors = require('cors');
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
 const { socketController } = require('../Sockets/controllers');
+
+const bodyParser = require('body-parser');
 
 class Server {
 	constructor() {
@@ -35,7 +42,8 @@ class Server {
 
 	addMiddlewares() {
 		this.app.use(cors());
-		this.app.use(express.json());
+		this.app.use(bodyParser.json());
+		this.app.use(bodyParser.urlencoded({ extended: true }));
 		this.app.use(express.static('public'));
 	}
 

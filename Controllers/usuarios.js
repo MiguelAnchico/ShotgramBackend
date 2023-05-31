@@ -1,5 +1,6 @@
 const express = require('express');
 const Usuario = require('../Models/UsuarioScheme');
+const Publicacion = require('../Models/PublicacionesScheme');
 
 const obtenerUsuarios = async (req, res = express.request) => {
 	try {
@@ -22,9 +23,9 @@ const obtenerUsuario = async (req, res = express.request) => {
 	try {
 		let usuario = await Usuario.findOne({
 			_id: req.params.id,
-		})
-			.select('-password')
-			.populate('publicaciones', 'publicacionesGustados');
+		}).select('-password');
+
+		const publicaciones = await Publicacion.find({ idCreador: usuario.id });
 
 		if (!usuario) {
 			return res.status(404).json({
@@ -36,6 +37,7 @@ const obtenerUsuario = async (req, res = express.request) => {
 		res.status(200).json({
 			ok: true,
 			usuario,
+			publicaciones,
 		});
 	} catch (error) {
 		console.log(error);

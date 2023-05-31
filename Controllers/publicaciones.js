@@ -77,6 +77,9 @@ const obtenerPublicacionesPorUsuario = async (req, res = express.request) => {
 
 const crearPublicacion = async (req, res = express.request) => {
 	try {
+		req.body.contenido = req.body.url;
+		delete req.body.url;
+
 		let publicacion = new Publicacion(req.body);
 		await publicacion.save();
 
